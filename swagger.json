@@ -1,0 +1,469 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "TaxAdda Invoice API",
+    "version": "1.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "paths": {
+    "/invoice/get": {
+      "get": {
+        "tags": ["Invoice"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "You'll get all the invoices in database",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                },
+                "invoice": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/invoice"
+                  },
+                  "description": "Invoices"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API returns all invoices in the database"
+      }
+    },
+    "/invoice/get/{id}": {
+      "get": {
+        "tags": ["Invoice"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "The invoice requested.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                },
+                "invoice": {
+                  "$ref": "#/definitions/invoice"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API returns a particular invoice from the database"
+      }
+    },
+    "/invoice/status/{status}": {
+      "get": {
+        "tags": ["Invoice"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "status",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "The invoice requested.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                },
+                "invoices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/invoice"
+                  },
+                  "description": "Invoices"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API returns a particular invoice from the database"
+      }
+    },
+    "/invoice/create": {
+      "post": {
+        "tags": ["Invoice"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "invoice",
+            "description": "The new invoice to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/invoice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The new invoice has been created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                },
+                "invoice": {
+                  "$ref": "#/definitions/invoice"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API adds a new invoice to the database"
+      }
+    },
+    "/invoice/update": {
+      "post": {
+        "tags": ["Invoice"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "invoice",
+            "description": "The invoice to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/invoice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The invoice has been updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                },
+                "invoice": {
+                  "$ref": "#/definitions/invoice"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API updates a invoice in the database"
+      }
+    },
+    "/invoice/delete": {
+      "post": {
+        "tags": ["Invoice"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The id of the invoice to delete"
+                }
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The invoice has been deleted.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API deletes a invoice from the database"
+      }
+    },
+    "/invoice/update/status": {
+      "post": {
+        "tags": ["Invoice"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The id of the invoice to update"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "The status of the invoice"
+                }
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The invoice has been updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API updates a invoice status in the database"
+      }
+    },
+    "/invoice/pay": {
+      "post": {
+        "tags": ["Invoice"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The id of the invoice to update"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "The amount thats paid"
+                }
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The invoice has been updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                },
+                "invoice": {
+                  "$ref": "#/definitions/invoice"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API updates a invoice status in the database"
+      }
+    },
+    "/invoice/send": {
+      "post": {
+        "tags": ["Invoice"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The id of the invoice to send"
+                }
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The invoice has been sent.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean",
+                  "description": "Status of request"
+                }
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/errorObj"
+            },
+            "description": "You'll get error in response"
+          }
+        },
+        "description": "This API sends a invoice to client."
+      }
+    }
+  },
+  "definitions": {
+    "invoice": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "number"
+        },
+        "client": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "date": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Outstanding", "Paid", "Late"]
+        },
+        "total": {
+          "type": "number"
+        },
+        "paid": {
+          "type": "number"
+        },
+        "lineItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "quantity": {
+                "type": "number"
+              },
+              "rate": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              },
+              "total": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "errorObj": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "default": false
+        },
+        "err": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
