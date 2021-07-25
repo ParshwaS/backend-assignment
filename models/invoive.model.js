@@ -25,6 +25,9 @@ const invoiceSchema = mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
+	due_date: {
+		type: Date
+	},
 	status: {
 		type: String,
 		default: 'Outstanding',

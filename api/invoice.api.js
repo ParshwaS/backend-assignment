@@ -15,6 +15,30 @@ var smtpTransport = nodemailer.createTransport({
 	}
 });
 
+setInterval(() => {
+	Invoice.find({
+		status: {$ne: 'Paid'}
+	}).then(invoices => {
+		invoices.forEach(invoice => {
+			if (moment(invoice.due_date).isSameOrBefore(moment())) {
+				Invoice.findByIdAndUpdate(invoice._id, {
+					status: 'Late'
+				}).then(() => {
+					console.log('Late: ' + invoice.name);
+					smtpTransport.sendMail({
+						to: invoice.client.email,
+						subject: 'Invoice ' + invoice.name + ' is overdue',
+						text: 'Hi,\n\n' +
+						'This is an automated message to notify you that invoice ' + invoice.client.name + ' is overdue.\n\n' +
+						'Kind regards,\n' +
+						'The team'
+					});
+				});
+			}
+		});
+	});
+}, 1800000);
+
 module.exports = function (app, io) {
 	// app is ExpressJS Router
 	// io is Socket.io
@@ -504,7 +528,7 @@ module.exports = function (app, io) {
 				// Send email
 				var mailOptions = {
 					to: invoice.client.email,
-					from: 'parshwa.surat@gmail.com',
+					from: 'tester11332@gmail.com',
 					subject: 'Invoice for ' + invoice.client.name,
 					text: 'Please find attached invoice for ' + invoice.client.name,
 					attachments: [{
@@ -556,7 +580,7 @@ module.exports = function (app, io) {
 					error: err
 				});
 			}
-			if (invoice.status === 'paid') {
+			if (invoice.status === 'Paid') {
 				res.status(400).json({
 					status: false,
 					error: 'Invoice already paid!'
